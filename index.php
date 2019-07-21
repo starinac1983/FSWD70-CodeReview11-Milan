@@ -1,209 +1,120 @@
-<?php require_once 'actions/db_connect.php'; ?> 
+<?php
+ob_start();
+session_start();
+require_once 'actions/db_connect.php';
 
+// it will never let you open index(login) page if session is set
+if ( isset($_SESSION['user'])!="" ) {
+ header("Location: home.php");
+ exit;
+}
+if ( isset($_SESSION['admin'])!="" ) {
+ header("Location: home.php");
+ exit;
+}
+$error = false;
+
+if( isset($_POST['btn-login']) ) {
+
+  // prevent sql injections/ clear user invalid inputs
+ $email = trim($_POST['usermail']);
+ $email = strip_tags($email);
+ $email = htmlspecialchars($email);
+
+ $pass = trim($_POST['userpass']);
+ $pass = strip_tags($pass);
+ $pass = htmlspecialchars($pass);
+ // prevent sql injections / clear user invalid inputs 
+
+ if(empty($email)){
+  $error = true;
+  $emailError = "Please enter your email address.";
+ } else if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+  $error = true;
+  $emailError = "Please enter valid email address.";
+ }
+
+ if (empty($pass)){
+  $error = true;
+  $passError = "Please enter your password." ;
+ }
+
+ // if there's no error, continue to login
+ if (!$error) {
+  
+  $password = hash( 'sha256', $pass); // password hashing
+
+  $res=mysqli_query($connect, "SELECT userId, username, userpass, userrole FROM users WHERE usermail='$email'" );
+  $row=mysqli_fetch_array($res, MYSQLI_ASSOC);
+  $count = mysqli_num_rows($res); // if uname/pass is correct it returns must be 1 row 
+
+  #print_r($row);
+  #echo $password." ";
+  #echo $row['userpass'];
+  
+  if( $count == 1 && $row['userpass']==$password ) {
+   if($row["userrole"] == "admin"){
+    $_SESSION["admin"] = $row["userId"];
+     header("Location: home.php");
+     }else {
+       $_SESSION['user'] = $row['userId'];
+        header( "Location: home.php");
+     }
+  
+  } else {
+   $errMSG = "Incorrect Credentials, Try again..." ;
+  }
+  
+ }
+
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-   <title>Milan's travelmatic</title>
+<title>Login & Registration System</title>
 
-   <style type="text/css">
-       /** {
-        font-family: monospace;
-        font-size: 12px;
-        vertical-align: middle;
-       }*/
-
-       .clearfix {
-        overflow: auto;
-}
-
-        img {
-          width: 200px;
-           height: 150px;
-          display: block;
-  margin-left: auto;
-  margin-right: auto;
-          /*vertical-align: middle;
-          margin: 0;*/
-          width: 200px;
-           height: 150px;
-                 }
-
-   </style>
-   <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+<link rel="stylesheet" href ="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"  crossorigin="anonymous">
 </head>
 <body>
-
-<!-- navbar -->
-
-<nav class="nav">
-  <a class="nav-link" href="index.php">Home</a>
-  <a class="nav-link" href="gastro.php">Gastro</a>
-  <a class="nav-link" href="places.php">Places</a>
-  <a class="nav-link" href="events.php">Events</a>
-  <a class="nav-link" href="admin.php">Admin</a>
-</nav>
-
-<div class="container-fluid">
-
-<!-- start gastro section -->
-    
-<section class="row d-flex justify-content-around m-1">
+   <form method="post"  action="index.php" autocomplete= "off">
   
-  <div class="col-12 m-4 text-dark text-center">
-      <div class="h2"><em>Gastro</em></div>
-  </div>
-
-<?php
-           $sql = "SELECT gastro.gastroId, gastrotype.gastroType, gastro.gastroName, gastro.description, gastro.picture, location.location, gastro.address, gastro.phone, gastro.website 
-FROM gastro 
-INNER JOIN location ON gastro.FK_location = location.locationId 
-INNER JOIN gastrotype ON gastro.FK_gastrotype = gastrotype.gastroTypeId ";
-           $result = $connect->query($sql);
-
-            if($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                   echo  "<div class='afe text-justify col-xl-3 p-xl-3 col-lg-3 p-lg-3 col-md-3 p-md-3 col-sm-3 p-sm-3 col-xs-12 p-xs-12 col-12 bg-white shadow-lg rounded-lg m-1'>
-        <div class='row mx-auto border-bottom mb-2'>
-          <div class='col'>
-            <img src='".$row['picture']."'
-               class='rounded mx-auto d-block mb-2'>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>name</p>
-            <p class='h5'>".$row['gastroName']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>type</p>
-            <p class='h5'>".$row['gastroType']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center ' >
-            <p class='h6'>location</p>
-            <p class='h5'>".$row['location']."</p>
-          </div>
-        </div>
-       </div>" ;
-               }
-           } else  {
-               echo  "<div><span>No Data Avaliable</span></div>";
-           }
-            ?>
-     
-  </section>
-
-<!-- start places section -->
-
-  <section class="row d-flex justify-content-around m-1">
-
-  <div class="col-12 m-4 text-dark text-center">
-      <div class="h2"><em>Places</em></div>
-  </div>
-
-<?php
-           $sql = "SELECT places.placeId, placestype.placesType , places.placeName, places.description, places.picture, location.location, places.address, places.website
-FROM places 
-INNER JOIN location ON places.FK_location = location.locationId 
-INNER JOIN placestype ON places.FK_placestype = placestype.placesTypeId";
-           $result = $connect->query($sql);
-
-            if($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                   echo  "<div class='afe text-justify col-xl-3 p-xl-3 col-lg-3 p-lg-3 col-md-3 p-md-3 col-sm-3 p-sm-3 col-xs-12 p-xs-12 col-12 bg-white shadow-lg rounded-lg m-1'>
-        <div class='row mx-auto border-bottom mb-2'>
-          <div class='col'>
-            <img src='".$row['picture']."'
-               class='rounded mx-auto d-block mb-2'>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>Place</p>
-            <p class='h5'>".$row['placeName']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>type</p>
-            <p class='h5'>".$row['placesType']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center ' >
-            <p class='h6'>location</p>
-            <p class='h5'>".$row['location']."</p>
-          </div>
-        </div>
-      </div>" ;
-               }
-           } else  {
-               echo  "<div><span>No Data Avaliable</span></div>";
-           }
-            ?>
-     
-  </section>
-
-<!-- start events section -->
-
-  <section class="row d-flex justify-content-around m-1">
-
-  <div class="col-12 m-4 text-dark text-center">
-      <div class="h2"><em>Events</em></div>
-  </div>
-
-<?php
-           $sql = "SELECT evento.eventId, eventtype.eventtype, evento.eventName, evento.description, evento.picture, location.location, evento.address, evento.website, evento.eventDate, evento.eventTime, evento.price
-FROM evento 
-INNER JOIN location ON evento.FK_location = location.locationId 
-INNER JOIN eventtype ON evento.FK_eventtype = eventtype.eventtypeId";
-           $result = $connect->query($sql);
-
-            if($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                   echo  "<div class='afe text-justify col-xl-3 p-xl-3 col-lg-3 p-lg-3 col-md-3 p-md-3 col-sm-3 p-sm-3 col-xs-12 p-xs-12 col-12 bg-white shadow-lg rounded-lg m-1'>
-        <div class='row mx-auto border-bottom mb-2'>
-          <div class='col'>
-            <img src='".$row['picture']."'
-               class='rounded mx-auto d-block mb-2'>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>event</p>
-            <p class='h5'>".$row['eventName']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center '>
-            <p class='h6'>type</p>
-            <p class='h5'>".$row['eventtype']."</p>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='col text-dark text-monospace text-center ' >
-            <p class='h6'>location</p>
-            <p class='h5'>".$row['location']."</p>
-          </div>
-        </div>
-      </div>" ;
-               }
-           } else  {
-               echo  "<div><span>No Data Avaliable</span></div>";
-           }
-            ?>
-     
-  </section>
-</div>  
-
+    
+            <h2>Sign In.</h2 >
+            <hr />
+            
+            <?php
+  if ( isset($errMSG) ) {
+echo  $errMSG; ?>
+              
+               <?php
+  }
+  ?>
+           
+          
+            
+            <input  type="email" name="usermail"  class="form-control" placeholder= "Your Email" value=""  maxlength="40" />
+        
+            <span class="text-danger"></span >
+  
+          
+            <input  type="password" name="userpass"  class="form-control" placeholder ="Your Password" maxlength="15"  />
+        
+           <span  class="text-danger"></span>
+            <hr />
+            <button id="submit-register" type="submit" name= "btn-login">Sign In</button>
+          
+          
+            <hr />
+  
+            <a  href="register.php">Sign Up Here...</a>
+      
+          
+   </form>
+   </div>
+</div>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
 </body>
 </html>
-
+<?php ob_end_flush(); ?>

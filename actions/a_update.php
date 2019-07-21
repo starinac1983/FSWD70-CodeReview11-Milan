@@ -3,15 +3,15 @@
 require_once 'db_connect.php';
 
 if ($_POST) {
-   $newtitle = $_POST['title'];
-   $newpublishdate = $_POST['publishDate'];
-   $newisbn = $_POST['isbn_ean'];
-   $newdescription = $_POST['mediaDescription'];
-   $newimage = $_POST['image'];
+   $newgastroname = $_POST['gastroName'];
+   $newpicture = $_POST['picture'];
+   $newaddress = $_POST['address'];
+   $newphone = $_POST['phone'];
+   $newdescription = $_POST['description'];
    
    $id = $_POST['id'];
 
-   $sql = "UPDATE media SET title = '$newtitle', isbn_ean = '$newisbn' , image = '$newimage',  mediaDescription = '$newdescription' , publishDate = '$newpublishdate' WHERE mediaID = {$id}" ;
+   $sql = "UPDATE gastro SET gastroName = '$newgastroname', picture = '$newpicture', address = '$newaddress', phone = '$newphone', description = '$newdescription', WHERE gastroId={$id}" ;
    if($connect->query($sql) === TRUE) {
        echo  "<p>Successfully Updated</p>";
        echo "<a href='../update.php?id=" .$id."'><button type='button'>Back</button></a>";
@@ -23,5 +23,4 @@ if ($_POST) {
    $connect->close();
 
 }
-
 ?>

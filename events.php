@@ -1,4 +1,20 @@
 <?php require_once 'actions/db_connect.php'; ?> 
+<?php
+session_start();
+if (!isset($_SESSION['user']) && !isset($_SESSION['admin'])) {
+ header( "Location: index.php");
+ }
+
+ if(isset($_SESSION["admin"])){
+  $var = $_SESSION["admin"];
+ } else {
+  $var = $_SESSION["user"];
+ }
+ 
+$row=$connect->query("SELECT * FROM users WHERE userId=".$var);
+$row = $row->fetch_assoc();
+
+?>
 
 <!DOCTYPE html>
 <html>
@@ -6,30 +22,17 @@
    <title>Milan's travelmatic</title>
 
    <style type="text/css">
-       /** {
-        font-family: monospace;
-        font-size: 12px;
-        vertical-align: middle;
-       }*/
-
        .clearfix {
         overflow: auto;
 }
-}
        
-        
         img {
-          width: 200px;
+           width: 200px;
            height: 150px;
-          display: block;
-  margin-left: auto;
-  margin-right: auto;
-          /*vertical-align: middle;
-          margin: 0;*/
-          width: 200px;
-           height: 150px;
+           display: block;
+           margin-left: auto;
+           margin-right: auto;
                  }
-
    </style>
    <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -40,19 +43,20 @@
 </head>
 <body>
 <nav class="nav">
-  <a class="nav-link" href="index.php">Home</a>
+  <a class="nav-link" href="home.php">Home</a>
   <a class="nav-link" href="gastro.php">Gastro</a>
   <a class="nav-link" href="places.php">Places</a>
   <a class="nav-link" href="events.php">Events</a>
+  <?php if( $row['userrole'] == 'admin'){ ?>
   <a class="nav-link" href="admin.php">Admin</a>
+  <?php } ?>  
 </nav>
+
 <div class="container-fluid">
 
 
-    <!-- alumni section start -->
-
   <section class="row d-flex justify-content-around m-1">
-
+<a class="nav-link" href= "logout.php?logout"><button class='btn btn-sm btn-warning mb' type="button" >Logout</button></a>
 <?php
            $sql = "SELECT evento.eventId, eventtype.eventtype, evento.eventName, evento.description, evento.picture, location.location, evento.address, evento.website, evento.eventDate, evento.eventTime, evento.price
 FROM evento 
@@ -66,7 +70,7 @@ INNER JOIN eventtype ON evento.FK_eventtype = eventtype.eventtypeId";
         <div class='row mx-auto border-bottom mb-2'>
           <div class='col'>
             <img src='".$row['picture']."'
-               class='rounded img-fluid mx-auto d-block'>
+               class='rounded mx-auto d-block mb-2'>
           </div>
         </div>
         <div class='row'>
