@@ -58,17 +58,20 @@ $row = $row->fetch_assoc();
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </head>
-<body>
-<nav class="nav">
-  <a class="nav-link" href="home.php">Home</a>
-  <a class="nav-link" href="gastro.php">Gastro</a>
-  <a class="nav-link" href="places.php">Places</a>
-  <a class="nav-link" href="events.php">Events</a>
+<div class="container-fluid bg-primary text-white">
+  <marquee><em>Welcome to Milan's travel-o-matic<em></marquee>
+</div>
+<nav class="nav bg-primary">
+  <a class="nav-link text-white" href="home.php">Home</a>
+  <a class="nav-link text-white" href="gastro.php">Gastro</a>
+  <a class="nav-link text-white" href="places.php">Places</a>
+  <a class="nav-link text-white" href="events.php">Events</a>
+  <!-- <a class="nav-link" href="admin.php">Admin</a> -->
   <?php if( $row['userrole'] == 'admin'){ ?>
-  <a class="nav-link" href="admin.php">Admin</a>
+  <a class="nav-link text-white" href="admin.php">Admin</a>
   <?php } ?>  
-
   <a class="nav-link" href= "logout.php?logout"><button class='btn btn-sm btn-warning mb' type="button" >Logout</button></a>
+  </div>
 </nav>
 
 <div class="container-fluid">
@@ -84,11 +87,11 @@ INNER JOIN gastrotype ON gastro.FK_gastrotype = gastrotype.gastroTypeId ";
 
             if($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
-                   echo  "<div class='afe text-justify col-xl-5 p-xl-5 col-lg-5 p-lg-5 col-md-5 p-md-5 col-sm-12 p-sm-3 col-xs-12 p-xs-12 col-12 bg-white shadow-lg rounded-lg m-1'>
+                   echo  "<div class='afe text-justify col-xl-5 p-xl-5 col-lg-5 p-lg-5 col-md-12 p-md-12 col-sm-12 p-sm-3 col-xs-12 p-xs-12 col-12 bg-white shadow-lg rounded-lg m-1'>
         <div class='row mx-auto border-bottom mb-2'>
           <div class='col'>
             <img src='".$row['picture']."'
-               class='rounded image-fluid mx-auto d-block mb-2 mt-2'>
+               class='rounded mx-auto d-block mb-2 mt-2'>
           </div>
         </div>
         <div class='row'>
@@ -149,10 +152,7 @@ INNER JOIN gastrotype ON gastro.FK_gastrotype = gastrotype.gastroTypeId ";
   </section>
  
 </div>  
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtjaD-saUZQ47PbxigOg25cvuO6_SuX3M&callback=initMap"
-   async defer>
-     
-   </script>
+
 <script>
 window.onscroll = function() {scrollFunction()};
 

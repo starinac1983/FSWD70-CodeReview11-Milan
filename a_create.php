@@ -33,14 +33,14 @@
                               </div>
                           </div>
                           <div class="form-group row">
-                              <label for="fk_gastrotype" class="col-sm-2 col-form-label col-form-label-sm">Gastro type</label>
+                              <label for="fk_gastrotype" class="col-sm-2 col-form-label col-form-label-sm">Type</label>
                               <div class="col-sm-10">
                                 <input list="type" id="fk_gastrotype" name="fk_gastrotype">
                                   <datalist id="type">
                                     <option value="1">restaurant</option>
                                     <option value="2">coffee house</option>
                                     <option value="3">fast food</option>
-                                    <option value="4">beer house</option>
+                                    <option value="5">beer house</option>
                                   </datalist>
                               </div>
                           </div>
@@ -86,6 +86,12 @@
                               <label for="website" class="col-sm-2 col-form-label col-form-label-sm">Website</label>
                               <div class="col-sm-10">
                                 <input type="text" name="website" class="form-control form-control-sm" id="website" placeholder="insert website"/>
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="googlemaps" class="col-sm-2 col-form-label col-form-label-sm">Map</label>
+                              <div class="col-sm-10">
+                                <input type="text" name="googlemaps" class="form-control form-control-sm" id="googlemaps" placeholder="insert iframe"/>
                               </div>
                           </div>
                           <div class="row m-2">

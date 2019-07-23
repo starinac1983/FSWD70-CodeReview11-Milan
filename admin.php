@@ -48,13 +48,20 @@ $row = $row->fetch_assoc();
 
 <!-- navbar -->
 
-<nav class="nav">
-  <a class="nav-link" href="home.php">Home</a>
-  <a class="nav-link" href="gastro.php">Gastro</a>
-  <a class="nav-link" href="places.php">Places</a>
-  <a class="nav-link" href="events.php">Events</a>
-  <a class="nav-link" href="admin.php">Admin</a>
+<div class="container-fluid bg-primary text-white">
+  <marquee><em>Welcome to Milan's travel-o-matic<em></marquee>
+</div>
+<nav class="nav bg-primary">
+  <a class="nav-link text-white" href="home.php">Home</a>
+  <a class="nav-link text-white" href="gastro.php">Gastro</a>
+  <a class="nav-link text-white" href="places.php">Places</a>
+  <a class="nav-link text-white" href="events.php">Events</a>
+  <!-- <a class="nav-link" href="admin.php">Admin</a> -->
+  <?php if( $row['userrole'] == 'admin'){ ?>
+  <a class="nav-link text-white" href="admin.php">Admin</a>
+  <?php } ?>  
   <a class="nav-link" href= "logout.php?logout"><button class='btn btn-sm btn-warning mb' type="button" >Logout</button></a>
+  </div>
 </nav>
 
 <div class="container-fluid">

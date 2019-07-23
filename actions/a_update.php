@@ -10,10 +10,11 @@ if ($_POST) {
    $newphone = $_POST['phone'];
    $newdescription = $_POST['description'];
    $newwebsite = $_POST['website'];
+   $newgoogle = $_POST['googlemaps'];
    $id = $_POST['id'];
 
 
-  $sql = "UPDATE gastro SET gastroName = '$newgastroname', picture = '$newpicture', address = '$newaddress', phone = '$newphone', description = '$newdescription', website = '$newwebsite' WHERE gastroId = '$id'";
+  $sql = "UPDATE gastro SET gastroName = '$newgastroname', picture = '$newpicture', address = '$newaddress', phone = '$newphone', description = '$newdescription', website = '$newwebsite', googlemaps = '$newgoogle' WHERE gastroId = '$id'";
    if($connect->query($sql) === TRUE) {
        echo  "<p>Successfully Updated</p>";
        echo  "<a href='../admin.php'><button type='button'>Home</button></a>";

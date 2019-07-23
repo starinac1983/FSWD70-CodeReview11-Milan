@@ -11,8 +11,9 @@ if ($_POST) {
    $newaddress = $_POST['address'];
    $newwebsite = $_POST['website'];
    $newphone = $_POST['phone'];
+   $newgoogle = $_POST['googlemaps'];
 
-  $sql = "INSERT INTO gastro (fk_location, fk_gastrotype, gastroName, description, picture, address, website, phone) VALUES ('$newfklocation','$newfkgastrotype', '$newgastroName', '$newdescription', '$newpicture', '$newaddress', '$newwebsite', '$newphone')";
+  $sql = "INSERT INTO gastro (fk_location, fk_gastrotype, gastroName, description, picture, address, website, phone, googlemaps) VALUES ('$newfklocation','$newfkgastrotype', '$newgastroName', '$newdescription', '$newpicture', '$newaddress', '$newwebsite', '$newphone', $newgoogle)";
     if($connect->query($sql) === TRUE) {
        echo "<p>New Record Successfully Created</p>" ;
        echo "<a href='../a_create.php'><button type='button'>Back</button></a>";

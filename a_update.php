@@ -91,6 +91,12 @@ if ($_GET['id']) {
                                 <input type="text" name="website" class="form-control form-control-sm" id="website" placeholder="" value="<?php echo $data['website'] ?>" />
                               </div>
                           </div>
+                          <div class="form-group row">
+                              <label for="website" class="col-sm-2 col-form-label col-form-label-sm">Google maps</label>
+                              <div class="col-sm-10">
+                                <input type="text" name="googlemaps" class="form-control form-control-sm" id="googlemaps" placeholder="" value="<?php echo $data['googlemaps'] ?>"/>
+                              </div>
+                          </div>
                           <div class="row m-2">
                                 <div class="col text-dark text-monospace text-center mb-1" >
                                   <input type= "hidden" name= "id" value= "<?php echo $data['gastroId']?>"/>
