@@ -22,7 +22,7 @@ $row = $row->fetch_assoc();
    <title>Milan's travelmatic</title>
 
    <style type="text/css">
-        * {
+        /** {
         font-family: monospace;
         font-size: 12px;
         vertical-align: middle;
@@ -31,12 +31,11 @@ $row = $row->fetch_assoc();
        .md {
            width : 90%;
            margin: auto;
-       }
+       }*/
         
-        /*table {
-          vertical-align: middle;
-           width: 100%;
-                 }*/
+       #exc {
+                   width: 150px;
+                 }
    </style>
    <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -50,23 +49,72 @@ $row = $row->fetch_assoc();
 <!-- navbar -->
 
 <nav class="nav">
-  <a class="nav-link" href="index.php">Home</a>
+  <a class="nav-link" href="home.php">Home</a>
   <a class="nav-link" href="gastro.php">Gastro</a>
   <a class="nav-link" href="places.php">Places</a>
   <a class="nav-link" href="events.php">Events</a>
   <a class="nav-link" href="admin.php">Admin</a>
+  <a class="nav-link" href= "logout.php?logout"><button class='btn btn-sm btn-warning mb' type="button" >Logout</button></a>
 </nav>
 
 <div class="container-fluid">
 
-<a class="nav-link" href= "logout.php?logout"><button class='btn btn-sm btn-warning mb' type="button" >Logout</button></a>
+   <section class="row d-flex justify-content-around m-1">
+  <div class="col-12 m-4 text-dark text-center">
+      <div class="h2"><em>location</em></div>
+      <a href= "b_create.php"><button class='btn btn-sm btn-primary mb' type="button" >Add location</button></a>
+  </div>
+   
+   <table class="table table-striped table-sm mt-2 col-3">
+       <thead class="thead-dark text-monospace">
+           <tr>
+               <th class="text-monospace" scope="col">ID</th>
+               <th class="text-monospace" scope="col">location</th>
+               <th class="text-monospace" scope="col">Option</th>
+               <th class="text-monospace" scope="col">Option</th>
+           </tr>
+       </thead>
+       <tbody>
+
+            <?php
+           $sql = "SELECT * FROM location";
+           $result = $connect->query($sql);
+
+            if($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                   echo  "<tr class='text-monospace' scope='row'>
+                       <td>".$row['locationId']." </td>
+                       <td>".$row['location']." </td>
+                       <td>
+
+                          <a href='b_update.php?id=" .$row['locationId']."'> 
+                           <button class='btn btn-sm btn-warning'type='button'>Edit</button></a>
+                        </td>
+                        <td>
+                           <a href='b_delete.php?id=" .$row['locationId']."'>
+                           <button class='btn btn-sm btn-danger'type='button'>Delete</button></a>";
+                         }
+                       echo "</td>
+                   </tr>" ;
+               }
+            else  {
+               echo  "<tr><td colspan='5'><center>No Data Avaliable</center></td></tr>";
+           }
+            ?>
+       </tbody>
+   </table>
+   </section>
 
   <section class="row d-flex justify-content-around m-1">
 
   <div class="col-12 m-4 text-dark text-center">
-      <div class="h2"><em>Gastro</em></div>
+      <div class="h2"><em>gastro</em></div>
+      <a href= "a_create.php"><button class='btn btn-sm btn-primary mb' type="button" >Add new gastro</button></a>
+      <a href= "aa_create.php"><button class='btn btn-sm btn-primary mb' type="button" >Add gastro type</button></a>
   </div>
-<table class="table table-striped table-sm mt-2 col-4">
+
+
+   <table class="table table-striped table-sm mt-2 col-5">
        <thead class="thead-dark text-monospace">
            <tr>
                <th class="text-monospace" scope="col">ID</th>
@@ -95,11 +143,50 @@ INNER JOIN gastrotype ON gastro.FK_gastrotype = gastrotype.gastroTypeId";
                        <td>".$row['location']."</td>
                        <td>
 
-                          <a href='update.php?id=" .$row['gastroId']."'>
+                          <a href='a_update.php?id=" .$row['gastroId']."'>
                            <button class='btn btn-sm btn-warning'type='button'>Edit</button></a>
                         </td>
                         <td>
-                           <a href='delete.php?id=" .$row['gastroId']."'>
+                           <a href='a_delete.php?id=" .$row['gastroId']."'>
+                           <button class='btn btn-sm btn-danger'type='button'>Delete</button></a>";
+                         }
+                       echo "</td>
+                   </tr>" ;
+               }
+            else  {
+               echo  "<tr><td colspan='5'><center>No Data Avaliable</center></td></tr>";
+           }
+            ?>
+       </tbody>
+   </table>
+
+   <table class="table table-striped table-sm mt-2 col-3">
+       <thead class="thead-dark text-monospace">
+           <tr>
+               <th class="text-monospace" scope="col">ID</th>
+               <th class="text-monospace" scope="col">gastro type</th>
+               <th class="text-monospace" scope="col">Option</th>
+               <th class="text-monospace" scope="col">Option</th>
+           </tr>
+       </thead>
+       <tbody>
+
+            <?php
+           $sql = "SELECT * FROM gastrotype";
+           $result = $connect->query($sql);
+
+            if($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                   echo  "<tr class='text-monospace' scope='row'>
+                       <td>".$row['gastroTypeId']." </td>
+                       <td>".$row['gastroType']." </td>
+                       <td>
+
+                          <a href='aa_update.php?id=" .$row['gastroTypeId']."'> 
+                           <button class='btn btn-sm btn-warning'type='button'>Edit</button></a>
+                        </td>
+                        <td>
+                           <a href='aa_delete.php?id=" .$row['gastroTypeId']."'>
                            <button class='btn btn-sm btn-danger'type='button'>Delete</button></a>";
                          }
                        echo "</td>
@@ -120,7 +207,7 @@ INNER JOIN gastrotype ON gastro.FK_gastrotype = gastrotype.gastroTypeId";
   <div class="col-12 m-4 text-dark text-center">
       <div class="h2"><em>places</em></div>
   </div>
-  <table class="table table-striped table-sm mt-2 col-4">
+  <table class="table table-striped table-sm mt-2 col-5">
        <thead class="thead-dark text-monospace">
            <tr>
                <th class="text-monospace" scope="col-2">ID</th>
@@ -165,6 +252,45 @@ INNER JOIN placestype ON places.FK_placestype = placestype.placesTypeId";
             ?>
        </tbody>
    </table>
+
+   <table class="table table-striped table-sm mt-2 col-3">
+       <thead class="thead-dark text-monospace">
+           <tr>
+               <th class="text-monospace" scope="col">ID</th>
+               <th class="text-monospace" scope="col">place Type</th>
+               <th class="text-monospace" scope="col">Option</th>
+               <th class="text-monospace" scope="col">Option</th>
+           </tr>
+       </thead>
+       <tbody>
+
+            <?php
+           $sql = "SELECT * FROM placestype";
+           $result = $connect->query($sql);
+
+            if($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                   echo  "<tr class='text-monospace' scope='row'>
+                       <td>".$row['placesTypeId']." </td>
+                       <td>".$row['placesType']." </td>
+                       <td>
+
+                          <a href='update.php?id=" .$row['placesTypeId']."'>
+                           <button class='btn btn-sm btn-warning'type='button'>Edit</button></a>
+                        </td>
+                        <td>
+                           <a href='delete.php?id=" .$row['placesTypeId']."'>
+                           <button class='btn btn-sm btn-danger'type='button'>Delete</button></a>";
+                         }
+                       echo "</td>
+                   </tr>" ;
+               }
+            else  {
+               echo  "<tr><td colspan='5'><center>No Data Avaliable</center></td></tr>";
+           }
+            ?>
+       </tbody>
+   </table>
      
   </section>
 
@@ -175,7 +301,7 @@ INNER JOIN placestype ON places.FK_placestype = placestype.placesTypeId";
   <div class="col-12 m-4 text-dark text-center">
       <div class="h2"><em>events</em></div>
   </div>
-  <table class="table table-striped table-sm mt-2 col-4">
+  <table class="table table-striped table-sm mt-2 col-5">
        <thead class="thead-dark text-monospace">
            <tr>
                <th class="text-monospace" scope="col-2">ID</th>
@@ -220,9 +346,49 @@ INNER JOIN eventtype ON evento.FK_eventtype = eventtype.eventtypeId";
             ?>
        </tbody>
    </table>
+
+   <table class="table table-striped table-sm mt-2 col-3">
+       <thead class="thead-dark text-monospace">
+           <tr>
+               <th class="text-monospace" scope="col">ID</th>
+               <th class="text-monospace" scope="col">event Type</th>
+               <th class="text-monospace" scope="col">Option</th>
+               <th class="text-monospace" scope="col">Option</th>
+           </tr>
+       </thead>
+       <tbody>
+
+            <?php
+           $sql = "SELECT * FROM eventtype";
+           $result = $connect->query($sql);
+
+            if($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                   echo  "<tr class='text-monospace' scope='row'>
+                       <td>".$row['eventtypeId']." </td>
+                       <td>".$row['eventtype']." </td>
+                       <td>
+
+                          <a href='update.php?id=" .$row['eventtypeId']."'>
+                           <button class='btn btn-sm btn-warning'type='button'>Edit</button></a>
+                        </td>
+                        <td>
+                           <a href='delete.php?id=" .$row['eventtypeId']."'>
+                           <button class='btn btn-sm btn-danger'type='button'>Delete</button></a>";
+                         }
+                       echo "</td>
+                   </tr>" ;
+               }
+            else  {
+               echo  "<tr><td colspan='5'><center>No Data Avaliable</center></td></tr>";
+           }
+            ?>
+       </tbody>
+   </table>
  
   </section>
 </div>  
 
 </body>
 </html>
+<?php ob_end_flush(); ?>

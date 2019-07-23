@@ -5,7 +5,7 @@ require_once 'actions/db_connect.php';
 if ($_GET['id']) {
    $id = $_GET['id'];
 
-   $sql = "SELECT * FROM gastro WHERE gastroId = {$id}" ;
+   $sql = "SELECT * FROM gastrotype WHERE gastroTypeId = {$id}" ;
    $result = $connect->query($sql);
    $data = $result->fetch_assoc();
 
@@ -15,7 +15,7 @@ if ($_GET['id']) {
 <!DOCTYPE html>
 <html>
 <head>
-   <title >Delete Media</title>
+   <title>Milan's travelmatic</title>
    <style type="text/css">
        * {
         font-family: monospace;
@@ -39,10 +39,10 @@ if ($_GET['id']) {
 <body>
 <div id="del">
 <h3 class="h3 text-monospace">Do you really want to delete?</h3>
-<form action ="actions/a_delete.php" method="post">
-   <input type="hidden" name= "id" value="<?php echo $data['gastroID'] ?>" />
+<form action ="actions/aa_delete.php" method="post">
+   <input type="hidden" name= "id" value="<?php echo $data['gastroTypeId'] ?>" />
    <button class='btn btn-sm btn-danger' type="submit">Yes, delete it!</button>
-   <a href="index.php"><button class='btn btn-sm btn-primary' type="button">No, go back!</button></a>
+   <a href="./admin.php"><button class='btn btn-sm btn-primary' type="button">No, go back!</button></a>
 </form>
 </div>
 </body>

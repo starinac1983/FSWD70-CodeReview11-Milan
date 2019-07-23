@@ -1,13 +1,98 @@
-<?php 
-
+<?php
+ob_start();
+session_start(); // start a new session or continues the previous
+if( isset($_SESSION['user'])!="" ){
+ header("Location: home.php" ); // redirects to home.php
+}
 include_once 'actions/db_connect.php';
+$error = false;
+if ( isset($_POST['btn-signup']) ) {
+ 
+ // sanitize user input to prevent sql injection
+ $name = trim($_POST['username']);
 
+  //trim - strips whitespace (or other characters) from the beginning and end of a string
+  $name = strip_tags($name);
+
+  // strip_tags — strips HTML and PHP tags from a string
+
+  $name = htmlspecialchars($name);
+ // htmlspecialchars converts special characters to HTML entities
+ $email = trim($_POST[ 'usermail']);
+ $email = strip_tags($email);
+ $email = htmlspecialchars($email);
+
+ $pass = trim($_POST['userpass']);
+ $pass = strip_tags($pass);
+ $pass = htmlspecialchars($pass);
+
+  // basic name validation
+ if (empty($name)) {
+  $error = true ;
+  $nameError = "Please enter your full name.";
+ } else if (strlen($name) < 3) {
+  $error = true;
+  $nameError = "Name must have at least 3 characters.";
+ } else if (!preg_match("/^[a-zA-Z ]+$/",$name)) {
+  $error = true ;
+  $nameError = "Name must contain alphabets and space.";
+ }
+
+ //basic email validation
+  if ( !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
+  $error = true;
+  $emailError = "Please enter valid email address." ;
+ } else {
+  // checks whether the email exists or not
+  $query = "SELECT usermail FROM users WHERE usermail='$email'";
+  $result = mysqli_query($connect, $query);
+  echo(mysqli_error($connect));
+  $count = mysqli_num_rows($result);
+  if($count!=0){
+   $error = true;
+   $emailError = "Provided Email is already in use.";
+  }
+ }
+ // password validation
+  if (empty($pass)){
+  $error = true;
+  $passError = "Please enter password.";
+ } else if(strlen($pass) < 6) {
+  $error = true;
+  $passError = "Password must have atleast 6 characters." ;
+ }
+
+ // password hashing for security
+$password = hash('sha256' , $pass);
+
+
+ // if there's no error, continue to signup
+ if( !$error ) {
+  
+  $query = "INSERT INTO users(username,usermail,userpass) VALUES('$name','$email','$password')";
+  $res = mysqli_query($connect, $query);
+  
+  if ($res) {
+   $errTyp = "success";
+   $errMSG = "Successfully registered, you may login now";
+   unset($name);
+    unset($email);
+   unset($pass);
+  } else  {
+   $errTyp = "danger";
+   $errMSG = "Something went wrong, try again later..." ;
+  }
+  
+ }
+
+
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Milan's travelmatic</title>
 <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -43,7 +128,7 @@ include_once 'actions/db_connect.php';
 				</div>
 				<div class="row m-2">
 					<div class="col text-dark text-monospace text-center m-1 mb-1">
-						<input type="email" name="useremail" class="form-control" placeholder="Enter Your Email" maxlength="40" value=""/>
+						<input type="email" name="usermail" class="form-control" placeholder="Enter Your Email" maxlength="40" value=""/>
 					</div>
 				</div>
 				<div class="row m-2">

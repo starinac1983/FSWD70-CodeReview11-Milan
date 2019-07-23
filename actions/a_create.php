@@ -3,22 +3,20 @@
 require_once 'db_connect.php';
 
 if ($_POST) {
-   $newfkauthor = $_POST['fk_author'];
-   $newgenre = $_POST['fk_genre'];
-   $newtitle = $_POST['title'];
-   $newmediadescription = $_POST['mediaDescription'];
-   $newimage = $_POST['image'];
-   $newisbn_ean = $_POST['isbn_ean'];
-   $newpublishdate = $_POST['publishdate'];
-   $newpublisher = $_POST['fk_publisher'];
-   $newmediatype = $_POST['fk_mediatype'];
-   $newstatus = $_POST['fk_status'];
+   $newfklocation = $_POST['fk_location'];
+   $newfkgastrotype = $_POST['fk_gastrotype'];
+   $newgastroName = $_POST['gastroName'];
+   $newdescription = $_POST['description'];
+   $newpicture = $_POST['picture'];
+   $newaddress = $_POST['address'];
+   $newwebsite = $_POST['website'];
+   $newphone = $_POST['phone'];
 
-  $sql = "INSERT INTO media (fk_author, fk_genre, title, mediaDescription, image, isbn_ean, publishdate, fk_publisher, fk_mediatype, fk_status) VALUES ('$newfkauthor','$newgenre', '$newtitle', '$newmediadescription', '$newimage', '$newisbn_ean', '$newpublishdate', '$newpublisher', '$newmediatype', '$newstatus')";
+  $sql = "INSERT INTO gastro (fk_location, fk_gastrotype, gastroName, description, picture, address, website, phone) VALUES ('$newfklocation','$newfkgastrotype', '$newgastroName', '$newdescription', '$newpicture', '$newaddress', '$newwebsite', '$newphone')";
     if($connect->query($sql) === TRUE) {
        echo "<p>New Record Successfully Created</p>" ;
-       echo "<a href='../create.php'><button type='button'>Back</button></a>";
-        echo "<a href='../index.php'><button type='button'>Home</button></a>";
+       echo "<a href='../a_create.php'><button type='button'>Back</button></a>";
+        echo "<a href='../admin.php'><button type='button'>Home</button></a>";
    } else  {
        echo "Error " . $sql . ' ' . $connect->connect_error;
    }

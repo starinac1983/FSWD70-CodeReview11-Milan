@@ -72,49 +72,61 @@ if( isset($_POST['btn-login']) ) {
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login & Registration System</title>
+	<title>Milan's travelmatic</title>
+<link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet"  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" href ="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"  crossorigin="anonymous">
 </head>
 <body>
-   <form method="post"  action="index.php" autocomplete= "off">
-  
-    
-            <h2>Sign In.</h2 >
-            <hr />
-            
-            <?php
-  if ( isset($errMSG) ) {
-echo  $errMSG; ?>
-              
-               <?php
-  }
-  ?>
-           
-          
-            
-            <input  type="email" name="usermail"  class="form-control" placeholder= "Your Email" value=""  maxlength="40" />
-        
-            <span class="text-danger"></span >
-  
-          
-            <input  type="password" name="userpass"  class="form-control" placeholder ="Your Password" maxlength="15"  />
-        
-           <span  class="text-danger"></span>
-            <hr />
-            <button id="submit-register" type="submit" name= "btn-login">Sign In</button>
-          
-          
-            <hr />
-  
-            <a  href="register.php">Sign Up Here...</a>
-      
-          
-   </form>
-   </div>
-</div>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>
+<div class="container-fluid">
+		<div class="col-12 m-1 text-dark text-monospace text-center">
+			<h1 class="letters">Sign in</h1>
+		</div>
+
+		<!-- sign in section -->
+
+	<section class="row alumni d-flex justify-content-around m-1">
+		
+		<div class="col-xl-3 p-xl-3 col-lg-3 p-lg-3 col-md-3 p-md-3 col-sm-3 p-sm-3 col-xs-12 p-xs-12 col-12 p-2 m-2 bg-white shadow-lg rounded-lg">
+			<form method="post"  action="index.php" autocomplete= "off">
+				<div class="row mx-auto border-bottom mb-2">
+					<div class="col m-2">
+						<img src="http://www.gdgoenka-gurgaon.com/images/login_icon.jpg"
+	            alt="avatar  white" class="rounded-circle img-fluid mx-auto d-block">
+					</div>
+				</div>
+				<!-- <div class="row m-2">
+					<div class="col text-dark text-monospace text-center m-1">
+						<input type ="text" name="username" class ="form-control" placeholder ="Enter Name" maxlength ="50" value="" />
+					</div>
+				</div> -->
+				<div class="row m-2">
+					<div class="col text-dark text-monospace text-center m-1 mb-1">
+						<input type="email" name="usermail" class="form-control" placeholder="Enter Your Email" maxlength="40" value=""/>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col text-dark text-monospace text-center m-1 mb-1">
+						<input type="password" name="userpass" class="form-control" placeholder="Your Password" maxlength="15" />
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col text-dark text-monospace text-center m-1 mb-1" >
+						<button id="submit-register" type="submit" name="btn-login" class="btn btn-danger text-white btn-xs d-block">Sign in</button>
+					</div>
+				</div>
+				<div class="row m-2">
+					<div class="col text-dark text-monospace text-center m-1 mb-1" >
+						<a href="register.php">Sign up here...</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>	
 </body>
 </html>
 <?php ob_end_flush(); ?>
